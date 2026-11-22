@@ -31,9 +31,3 @@ with the full trajectory recorded. The pipeline is model-agnostic
 (verified on DeepSeek v4 and Gemini 3.1 flash-lite) and fully
 reproducible: `run_all.ps1` / `run_all.sh` runs solution, baseline and
 evaluation from a clean environment (~9 minutes, ~$0.09).
-
-Every iteration is documented with evidence in the
-[Improvement Changelog](https://github.com/anishraja04/incident-engineer/blob/master/IMPROVEMENT_CHANGELOG.md),
-and complete agent trajectories are included in the repository.
-
-**Repo:** https://github.com/anishraja04/incident-engineer
