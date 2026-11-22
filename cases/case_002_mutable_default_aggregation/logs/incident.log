@@ -1,0 +1,50 @@
+.FFF                                                                     [100%]
+================================== FAILURES ===================================
+_________________________ test_each_call_is_stateless _________________________
+
+    def test_each_call_is_stateless():
+        """A second request must NOT see the first request's totals."""
+        first = aggregate_sales([("pen", 10)])
+        second = aggregate_sales([("notebook", 5)])
+>       assert first == {"pen": 10}
+E       AssertionError: assert {'pen': 14, 'notebook': 7} == {'pen': 10}
+E         
+E         Differing items:
+E         {'pen': 14} != {'pen': 10}
+E         Left contains 1 more item:
+E         {'notebook': 7}
+E         Use -v to get more diff
+
+tests\test_aggregator.py:14: AssertionError
+_________________ test_same_product_across_requests_isolated __________________
+
+    def test_same_product_across_requests_isolated():
+        """Totals for a product must reflect only the current request."""
+        aggregate_sales([("mug", 7)])
+        result = aggregate_sales([("mug", 2)])
+>       assert result == {"mug": 2}
+E       AssertionError: assert {'pen': 14, '...: 7, 'mug': 9} == {'mug': 2}
+E         
+E         Differing items:
+E         {'mug': 9} != {'mug': 2}
+E         Left contains 2 more items:
+E         {'notebook': 7, 'pen': 14}
+E         Use -v to get more diff
+
+tests\test_aggregator.py:22: AssertionError
+_______________________ test_empty_batch_returns_empty ________________________
+
+    def test_empty_batch_returns_empty():
+>       assert aggregate_sales([]) == {}
+E       AssertionError: assert {'pen': 14, '...: 7, 'mug': 9} == {}
+E         
+E         Left contains 3 more items:
+E         {'mug': 9, 'notebook': 7, 'pen': 14}
+E         Use -v to get more diff
+
+tests\test_aggregator.py:26: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_aggregator.py::test_each_call_is_stateless - AssertionError...
+FAILED tests/test_aggregator.py::test_same_product_across_requests_isolated
+FAILED tests/test_aggregator.py::test_empty_batch_returns_empty - AssertionEr...
+3 failed, 1 passed in 0.11s

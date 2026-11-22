@@ -1,0 +1,28 @@
+.FF.                                                                     [100%]
+================================== FAILURES ===================================
+_____________________ test_tuning_thresholds_is_isolated ______________________
+
+    def test_tuning_thresholds_is_isolated():
+        """Tuning one service's threshold must not change another service's
+        thresholds, even after both have been loaded."""
+        a = load_config("checkout")
+        b = load_config("payments")
+        a["thresholds"]["p90"] = 0.50
+>       assert b["thresholds"]["p90"] == 0.95
+E       assert 0.5 == 0.95
+
+tests\test_loader.py:17: AssertionError
+_______________________ test_alerts_config_is_isolated ________________________
+
+    def test_alerts_config_is_isolated():
+        a = load_config("checkout")
+        b = load_config("payments")
+        a["alerts"]["pager"] = True
+>       assert b["alerts"]["pager"] is False
+E       assert True is False
+
+tests\test_loader.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_loader.py::test_tuning_thresholds_is_isolated - assert 0.5 ...
+FAILED tests/test_loader.py::test_alerts_config_is_isolated - assert True is ...
+2 failed, 2 passed in 0.09s

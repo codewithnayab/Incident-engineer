@@ -1,0 +1,70 @@
+FFFFF                                                                    [100%]
+================================== FAILURES ===================================
+_____________________ test_first_page_returns_first_items _____________________
+
+    def test_first_page_returns_first_items():
+>       assert get_page(ITEMS, 1, 4) == ["item-1", "item-2", "item-3", "item-4"]
+E       AssertionError: assert ['item-2', 'i...-4', 'item-5'] == ['item-1', 'i...-3', 'item-4']
+E         
+E         At index 0 diff: 'item-2' != 'item-1'
+E         Use -v to get more diff
+
+tests\test_paginator.py:7: AssertionError
+_____________________ test_second_page_returns_next_items _____________________
+
+    def test_second_page_returns_next_items():
+>       assert get_page(ITEMS, 2, 4) == ["item-5", "item-6", "item-7", "item-8"]
+E       AssertionError: assert ['item-6', 'i...-8', 'item-9'] == ['item-5', 'i...-7', 'item-8']
+E         
+E         At index 0 diff: 'item-6' != 'item-5'
+E         Use -v to get more diff
+
+tests\test_paginator.py:11: AssertionError
+______________________ test_last_page_returns_remainder _______________________
+
+    def test_last_page_returns_remainder():
+>       assert get_page(ITEMS, 3, 4) == ["item-9", "item-10"]
+E       AssertionError: assert ['item-10'] == ['item-9', 'item-10']
+E         
+E         At index 0 diff: 'item-10' != 'item-9'
+E         Right contains one more item: 'item-10'
+E         Use -v to get more diff
+
+tests\test_paginator.py:15: AssertionError
+_____________________ test_all_items_covered_across_pages _____________________
+
+    def test_all_items_covered_across_pages():
+        seen = []
+        page = 1
+        while True:
+            chunk = get_page(ITEMS, page, 4)
+            if not chunk:
+                break
+            seen.extend(chunk)
+            page += 1
+>       assert seen == ITEMS
+E       AssertionError: assert ['item-2', 'i...'item-7', ...] == ['item-1', 'i...'item-6', ...]
+E         
+E         At index 0 diff: 'item-2' != 'item-1'
+E         Right contains one more item: 'item-10'
+E         Use -v to get more diff
+
+tests\test_paginator.py:27: AssertionError
+__________________ test_page_1_with_per_page_equal_to_length __________________
+
+    def test_page_1_with_per_page_equal_to_length():
+>       assert get_page(ITEMS, 1, 10) == ITEMS
+E       AssertionError: assert ['item-2', 'i...'item-7', ...] == ['item-1', 'i...'item-6', ...]
+E         
+E         At index 0 diff: 'item-2' != 'item-1'
+E         Right contains one more item: 'item-10'
+E         Use -v to get more diff
+
+tests\test_paginator.py:31: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_paginator.py::test_first_page_returns_first_items - Asserti...
+FAILED tests/test_paginator.py::test_second_page_returns_next_items - Asserti...
+FAILED tests/test_paginator.py::test_last_page_returns_remainder - AssertionE...
+FAILED tests/test_paginator.py::test_all_items_covered_across_pages - Asserti...
+FAILED tests/test_paginator.py::test_page_1_with_per_page_equal_to_length - A...
+5 failed in 0.11s

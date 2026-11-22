@@ -1,0 +1,37 @@
+..F..                                                                    [100%]
+================================== FAILURES ===================================
+________________________ test_due_when_no_explicit_now ________________________
+
+    def test_due_when_no_explicit_now():
+        """The default path (worker tick without an explicit timestamp) must
+        use the same time basis as the tests: UTC."""
+        p = make_payment(hours_from_now=-1.0)  # scheduled in the past
+>       assert is_due(p)
+               ^^^^^^^^^
+
+tests\test_scheduler.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+payment = Payment(payment_id='pay_001', customer_id='cust_042', amount_cents=1999, interval_hours=24, next_run_at=datetime.datet...09957, tzinfo=datetime.timezone.utc), created_at=datetime.datetime(2026, 8, 28, 17, 5, 46, 509979), status='scheduled')
+now = None
+
+    def is_due(payment: Payment, now: datetime | None = None) -> bool:
+        """True when the payment's next run time has been reached."""
+        current = now if now is not None else datetime.now()
+>       return current >= payment.next_run_at
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: can't compare offset-naive and offset-aware datetimes
+
+payments\scheduler.py:20: TypeError
+============================== warnings summary ===============================
+tests/test_scheduler.py::test_not_due_before_next_run
+tests/test_scheduler.py::test_due_at_next_run
+tests/test_scheduler.py::test_due_when_no_explicit_now
+tests/test_scheduler.py::test_advance_keeps_next_run_in_utc
+tests/test_worker_loop.py::test_recurring_payments_charged_on_schedule
+  <string>:8: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_scheduler.py::test_due_when_no_explicit_now - TypeError: ca...
+1 failed, 4 passed, 5 warnings in 0.09s

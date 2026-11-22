@@ -1,0 +1,86 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+___________________________ test_all_records_loaded ___________________________
+
+    def test_all_records_loaded():
+>       records = read_records("data/orders.csv")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_loader.py:5: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+importer\loader.py:15: in read_records
+    for row in reader:
+               ^^^^^^
+C:\Python313\Lib\csv.py:177: in __next__
+    self.fieldnames
+C:\Python313\Lib\csv.py:164: in fieldnames
+    self._fieldnames = next(self.reader)
+                       ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000001DD3B25E450>
+input = b'order_id,customer_name,item,quantity\r\nORD-0001,Jos\xe9 Almeida,espresso machine,2\r\nORD-0002,M\xfcller & S\xf6hne...D-0003,Anna L\xf3pez,drip kettle,1\r\nORD-0004,Bj\xf6rn \xc5kesson,scale,3\r\nORD-0005,St\xe9phane Girard,tamper,4\r\n'
+final = False
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 50: invalid continuation byte
+
+<frozen codecs>:325: UnicodeDecodeError
+_________________ test_customer_names_with_accents_preserved __________________
+
+    def test_customer_names_with_accents_preserved():
+        """Accented names from the legacy export must survive the import."""
+>       records = {r["order_id"]: r["customer_name"] for r in read_records("data/orders.csv")}
+                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_loader.py:11: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+importer\loader.py:15: in read_records
+    for row in reader:
+               ^^^^^^
+C:\Python313\Lib\csv.py:177: in __next__
+    self.fieldnames
+C:\Python313\Lib\csv.py:164: in fieldnames
+    self._fieldnames = next(self.reader)
+                       ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000001DD3B452930>
+input = b'order_id,customer_name,item,quantity\r\nORD-0001,Jos\xe9 Almeida,espresso machine,2\r\nORD-0002,M\xfcller & S\xf6hne...D-0003,Anna L\xf3pez,drip kettle,1\r\nORD-0004,Bj\xf6rn \xc5kesson,scale,3\r\nORD-0005,St\xe9phane Girard,tamper,4\r\n'
+final = False
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 50: invalid continuation byte
+
+<frozen codecs>:325: UnicodeDecodeError
+__________________________ test_quantities_are_ints ___________________________
+
+    def test_quantities_are_ints():
+>       for r in read_records("data/orders.csv"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_loader.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+importer\loader.py:15: in read_records
+    for row in reader:
+               ^^^^^^
+C:\Python313\Lib\csv.py:177: in __next__
+    self.fieldnames
+C:\Python313\Lib\csv.py:164: in fieldnames
+    self._fieldnames = next(self.reader)
+                       ^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <encodings.utf_8.IncrementalDecoder object at 0x000001DD3B453FB0>
+input = b'order_id,customer_name,item,quantity\r\nORD-0001,Jos\xe9 Almeida,espresso machine,2\r\nORD-0002,M\xfcller & S\xf6hne...D-0003,Anna L\xf3pez,drip kettle,1\r\nORD-0004,Bj\xf6rn \xc5kesson,scale,3\r\nORD-0005,St\xe9phane Girard,tamper,4\r\n'
+final = False
+
+>   ???
+E   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe9 in position 50: invalid continuation byte
+
+<frozen codecs>:325: UnicodeDecodeError
+=========================== short test summary info ===========================
+FAILED tests/test_loader.py::test_all_records_loaded - UnicodeDecodeError: 'u...
+FAILED tests/test_loader.py::test_customer_names_with_accents_preserved - Uni...
+FAILED tests/test_loader.py::test_quantities_are_ints - UnicodeDecodeError: '...
+3 failed in 0.17s

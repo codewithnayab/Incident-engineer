@@ -1,0 +1,25 @@
+..FF.                                                                    [100%]
+================================== FAILURES ===================================
+______________________ test_special_characters_rejected _______________________
+
+    def test_special_characters_rejected():
+        """Slugs with any character outside [a-z0-9-] must be rejected ù
+        a prefix match is not a valid slug."""
+>       assert not is_valid_slug("hello world")
+E       AssertionError: assert not True
+E        +  where True = is_valid_slug('hello world')
+
+tests\test_validator.py:17: AssertionError
+_____________________ test_bad_hyphen_placement_rejected ______________________
+
+    def test_bad_hyphen_placement_rejected():
+        assert not is_valid_slug("-hello")
+>       assert not is_valid_slug("hello-")
+E       AssertionError: assert not True
+E        +  where True = is_valid_slug('hello-')
+
+tests\test_validator.py:25: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_validator.py::test_special_characters_rejected - AssertionE...
+FAILED tests/test_validator.py::test_bad_hyphen_placement_rejected - Assertio...
+2 failed, 3 passed in 0.09s

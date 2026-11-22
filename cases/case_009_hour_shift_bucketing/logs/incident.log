@@ -1,0 +1,157 @@
+...FFFF.FF                                                               [100%]
+================================== FAILURES ===================================
+________________ test_event_bucketed_into_its_utc_hour[9-0-9] _________________
+
+hour = 9, minute = 0, expected = 9
+
+    @pytest.mark.parametrize(
+        "hour,minute,expected",
+        [
+            (0, 0, 0),
+            (6, 30, 6),
+            (8, 59, 8),
+            (9, 0, 9),
+            (12, 0, 12),
+            (17, 30, 17),
+            (22, 59, 22),
+            (23, 0, 23),
+        ],
+    )
+    def test_event_bucketed_into_its_utc_hour(hour, minute, expected):
+        """Each event must be reported in the exact UTC hour it occurred."""
+>       assert hour_of(ts_for(hour, minute)) == expected
+E       assert 10 == 9
+E        +  where 10 = hour_of(1786784400)
+E        +    where 1786784400 = ts_for(9, 0)
+
+tests\test_reporting.py:29: AssertionError
+_______________ test_event_bucketed_into_its_utc_hour[12-0-12] ________________
+
+hour = 12, minute = 0, expected = 12
+
+    @pytest.mark.parametrize(
+        "hour,minute,expected",
+        [
+            (0, 0, 0),
+            (6, 30, 6),
+            (8, 59, 8),
+            (9, 0, 9),
+            (12, 0, 12),
+            (17, 30, 17),
+            (22, 59, 22),
+            (23, 0, 23),
+        ],
+    )
+    def test_event_bucketed_into_its_utc_hour(hour, minute, expected):
+        """Each event must be reported in the exact UTC hour it occurred."""
+>       assert hour_of(ts_for(hour, minute)) == expected
+E       assert 13 == 12
+E        +  where 13 = hour_of(1786795200)
+E        +    where 1786795200 = ts_for(12, 0)
+
+tests\test_reporting.py:29: AssertionError
+_______________ test_event_bucketed_into_its_utc_hour[17-30-17] _______________
+
+hour = 17, minute = 30, expected = 17
+
+    @pytest.mark.parametrize(
+        "hour,minute,expected",
+        [
+            (0, 0, 0),
+            (6, 30, 6),
+            (8, 59, 8),
+            (9, 0, 9),
+            (12, 0, 12),
+            (17, 30, 17),
+            (22, 59, 22),
+            (23, 0, 23),
+        ],
+    )
+    def test_event_bucketed_into_its_utc_hour(hour, minute, expected):
+        """Each event must be reported in the exact UTC hour it occurred."""
+>       assert hour_of(ts_for(hour, minute)) == expected
+E       assert 18 == 17
+E        +  where 18 = hour_of(1786815000)
+E        +    where 1786815000 = ts_for(17, 30)
+
+tests\test_reporting.py:29: AssertionError
+_______________ test_event_bucketed_into_its_utc_hour[22-59-22] _______________
+
+hour = 22, minute = 59, expected = 22
+
+    @pytest.mark.parametrize(
+        "hour,minute,expected",
+        [
+            (0, 0, 0),
+            (6, 30, 6),
+            (8, 59, 8),
+            (9, 0, 9),
+            (12, 0, 12),
+            (17, 30, 17),
+            (22, 59, 22),
+            (23, 0, 23),
+        ],
+    )
+    def test_event_bucketed_into_its_utc_hour(hour, minute, expected):
+        """Each event must be reported in the exact UTC hour it occurred."""
+>       assert hour_of(ts_for(hour, minute)) == expected
+E       assert 23 == 22
+E        +  where 23 = hour_of(1786834740)
+E        +    where 1786834740 = ts_for(22, 59)
+
+tests\test_reporting.py:29: AssertionError
+________________________ test_end_to_end_hourly_report ________________________
+
+    def test_end_to_end_hourly_report():
+        text = "\n".join(
+            [
+                f"ts={ts_for(9, 10)} metric=cpu_usage value=42.0",
+                f"ts={ts_for(9, 45)} metric=cpu_usage value=43.0",
+                f"ts={ts_for(10, 5)} metric=cpu_usage value=41.0",
+                f"ts={ts_for(23, 0)} metric=cpu_usage value=50.0",
+                f"ts={ts_for(0, 30)} metric=cpu_usage value=39.0",
+            ]
+        )
+        events = ingest(text)
+        counts = hourly_counts(events)
+        # Two events at 09:00 UTC, one at 10:00, one at 23:00, one at 00:00.
+>       assert counts == {0: 1, 9: 2, 10: 1, 23: 1}
+E       assert {0: 1, 10: 2, 11: 1, 23: 1} == {0: 1, 9: 2, 10: 1, 23: 1}
+E         
+E         Omitting 2 identical items, use -vv to show
+E         Differing items:
+E         {10: 2} != {10: 1}
+E         Left contains 1 more item:
+E         {11: 1}
+E         Right contains 1 more item:
+E         {9: 2}
+E         Use -v to get more diff
+
+tests\test_reporting.py:45: AssertionError
+__________________ test_peak_hour_matches_source_timestamps ___________________
+
+    def test_peak_hour_matches_source_timestamps():
+        """The busiest hour in the report must be the busiest hour in the data."""
+        text = "\n".join(
+            [f"ts={ts_for(17, m)} metric=cpu_usage value=1.0" for m in range(0, 60, 5)]
+        )
+        events = ingest(text)
+        counts = hourly_counts(events)
+>       assert counts == {17: 12}
+E       assert {18: 12} == {17: 12}
+E         
+E         Left contains 1 more item:
+E         {18: 12}
+E         Right contains 1 more item:
+E         {17: 12}
+E         Use -v to get more diff
+
+tests\test_reporting.py:55: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_reporting.py::test_event_bucketed_into_its_utc_hour[9-0-9]
+FAILED tests/test_reporting.py::test_event_bucketed_into_its_utc_hour[12-0-12]
+FAILED tests/test_reporting.py::test_event_bucketed_into_its_utc_hour[17-30-17]
+FAILED tests/test_reporting.py::test_event_bucketed_into_its_utc_hour[22-59-22]
+FAILED tests/test_reporting.py::test_end_to_end_hourly_report - assert {0: 1,...
+FAILED tests/test_reporting.py::test_peak_hour_matches_source_timestamps - as...
+6 failed, 4 passed in 0.50s

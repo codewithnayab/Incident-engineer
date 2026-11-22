@@ -1,0 +1,114 @@
+......FFFFF.                                                             [100%]
+================================== FAILURES ===================================
+_____________________ test_half_cents_round_up[50-1.0-1] ______________________
+
+amount_cents = 50, rate_percent = 1.0, expected = 1
+
+    @pytest.mark.parametrize(
+        "amount_cents,rate_percent,expected",
+        [
+            (50, 1.0, 1),      # 0.5 cents -> rounds UP to 1
+            (85, 10.0, 9),     # 8.5 cents -> rounds UP to 9
+            (225, 10.0, 23),   # 22.5 cents -> rounds UP to 23
+            (260, 2.5, 7),     # 6.5 cents -> rounds UP to 7
+            (232, 6.25, 15),   # 14.5 cents -> rounds UP to 15
+        ],
+    )
+    def test_half_cents_round_up(amount_cents, rate_percent, expected):
+        """Finance rule: halves round UP, never to the nearest even number."""
+>       assert compute_tax_cents(amount_cents, rate_percent) == expected
+E       assert 0 == 1
+E        +  where 0 = compute_tax_cents(50, 1.0)
+
+tests\test_calc.py:33: AssertionError
+_____________________ test_half_cents_round_up[85-10.0-9] _____________________
+
+amount_cents = 85, rate_percent = 10.0, expected = 9
+
+    @pytest.mark.parametrize(
+        "amount_cents,rate_percent,expected",
+        [
+            (50, 1.0, 1),      # 0.5 cents -> rounds UP to 1
+            (85, 10.0, 9),     # 8.5 cents -> rounds UP to 9
+            (225, 10.0, 23),   # 22.5 cents -> rounds UP to 23
+            (260, 2.5, 7),     # 6.5 cents -> rounds UP to 7
+            (232, 6.25, 15),   # 14.5 cents -> rounds UP to 15
+        ],
+    )
+    def test_half_cents_round_up(amount_cents, rate_percent, expected):
+        """Finance rule: halves round UP, never to the nearest even number."""
+>       assert compute_tax_cents(amount_cents, rate_percent) == expected
+E       assert 8 == 9
+E        +  where 8 = compute_tax_cents(85, 10.0)
+
+tests\test_calc.py:33: AssertionError
+____________________ test_half_cents_round_up[225-10.0-23] ____________________
+
+amount_cents = 225, rate_percent = 10.0, expected = 23
+
+    @pytest.mark.parametrize(
+        "amount_cents,rate_percent,expected",
+        [
+            (50, 1.0, 1),      # 0.5 cents -> rounds UP to 1
+            (85, 10.0, 9),     # 8.5 cents -> rounds UP to 9
+            (225, 10.0, 23),   # 22.5 cents -> rounds UP to 23
+            (260, 2.5, 7),     # 6.5 cents -> rounds UP to 7
+            (232, 6.25, 15),   # 14.5 cents -> rounds UP to 15
+        ],
+    )
+    def test_half_cents_round_up(amount_cents, rate_percent, expected):
+        """Finance rule: halves round UP, never to the nearest even number."""
+>       assert compute_tax_cents(amount_cents, rate_percent) == expected
+E       assert 22 == 23
+E        +  where 22 = compute_tax_cents(225, 10.0)
+
+tests\test_calc.py:33: AssertionError
+_____________________ test_half_cents_round_up[260-2.5-7] _____________________
+
+amount_cents = 260, rate_percent = 2.5, expected = 7
+
+    @pytest.mark.parametrize(
+        "amount_cents,rate_percent,expected",
+        [
+            (50, 1.0, 1),      # 0.5 cents -> rounds UP to 1
+            (85, 10.0, 9),     # 8.5 cents -> rounds UP to 9
+            (225, 10.0, 23),   # 22.5 cents -> rounds UP to 23
+            (260, 2.5, 7),     # 6.5 cents -> rounds UP to 7
+            (232, 6.25, 15),   # 14.5 cents -> rounds UP to 15
+        ],
+    )
+    def test_half_cents_round_up(amount_cents, rate_percent, expected):
+        """Finance rule: halves round UP, never to the nearest even number."""
+>       assert compute_tax_cents(amount_cents, rate_percent) == expected
+E       assert 6 == 7
+E        +  where 6 = compute_tax_cents(260, 2.5)
+
+tests\test_calc.py:33: AssertionError
+____________________ test_half_cents_round_up[232-6.25-15] ____________________
+
+amount_cents = 232, rate_percent = 6.25, expected = 15
+
+    @pytest.mark.parametrize(
+        "amount_cents,rate_percent,expected",
+        [
+            (50, 1.0, 1),      # 0.5 cents -> rounds UP to 1
+            (85, 10.0, 9),     # 8.5 cents -> rounds UP to 9
+            (225, 10.0, 23),   # 22.5 cents -> rounds UP to 23
+            (260, 2.5, 7),     # 6.5 cents -> rounds UP to 7
+            (232, 6.25, 15),   # 14.5 cents -> rounds UP to 15
+        ],
+    )
+    def test_half_cents_round_up(amount_cents, rate_percent, expected):
+        """Finance rule: halves round UP, never to the nearest even number."""
+>       assert compute_tax_cents(amount_cents, rate_percent) == expected
+E       assert 14 == 15
+E        +  where 14 = compute_tax_cents(232, 6.25)
+
+tests\test_calc.py:33: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_calc.py::test_half_cents_round_up[50-1.0-1] - assert 0 == 1
+FAILED tests/test_calc.py::test_half_cents_round_up[85-10.0-9] - assert 8 == 9
+FAILED tests/test_calc.py::test_half_cents_round_up[225-10.0-23] - assert 22 ...
+FAILED tests/test_calc.py::test_half_cents_round_up[260-2.5-7] - assert 6 == 7
+FAILED tests/test_calc.py::test_half_cents_round_up[232-6.25-15] - assert 14 ...
+5 failed, 7 passed in 0.41s

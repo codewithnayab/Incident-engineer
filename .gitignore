@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+trajectories/runs/
+eval/workspaces/
+venv/
+.venv/
+
